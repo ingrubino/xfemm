@@ -46,7 +46,7 @@
 #include <cstdio>
 #include <fstream>
 #include <iomanip>
-#include <malloc.h>
+//#include <malloc.h>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -2039,13 +2039,13 @@ TriangulateHelper::TriangulateHelper()
 
 TriangulateHelper::~TriangulateHelper()
 {
-    if (in.pointlist) { free(in.pointlist); }
-    if (in.pointattributelist) { free(in.pointattributelist); }
-    if (in.pointmarkerlist) { free(in.pointmarkerlist); }
-    if (in.regionlist) { free(in.regionlist); }
-    if (in.segmentlist) { free(in.segmentlist); }
-    if (in.segmentmarkerlist) { free(in.segmentmarkerlist); }
-    if (in.holelist) { free(in.holelist); }
+    if (in.pointlist) delete[] in.pointlist; //{ free(in.pointlist); }
+    if (in.pointattributelist) delete[] in.pointattributelist; //{ free(in.pointattributelist); }
+    if (in.pointmarkerlist) delete[] in.pointmarkerlist; //{ free(in.pointmarkerlist); }
+    if (in.regionlist) delete[] in.regionlist; //{ free(in.regionlist); }
+    if (in.segmentlist) delete[] in.segmentlist; // { free(in.segmentlist); }
+    if (in.segmentmarkerlist) delete[] in.segmentmarkerlist; // { free(in.segmentmarkerlist); }
+    if (in.holelist) delete[] in.holelist; // { free(in.holelist); }
 
 #ifdef XFEMM_BUILTIN_TRIANGLE
     if (out.pointlist) { free(out.pointlist); }
@@ -2075,7 +2075,8 @@ bool TriangulateHelper::initPointsWithMarkers(const TriangulateHelper::nodelist_
 
     in.numberofpoints = nodelst.size();
 
-    in.pointlist = (REAL *) malloc(in.numberofpoints * 2 * sizeof(REAL));
+    //in.pointlist = (REAL *) malloc(in.numberofpoints * 2 * sizeof(REAL));
+    in.pointlist = new REAL[in.numberofpoints * 2];
     if (!in.pointlist) {
         WarnMessage("Point list for triangulation is null!\n");
         return false;
@@ -2088,7 +2089,8 @@ bool TriangulateHelper::initPointsWithMarkers(const TriangulateHelper::nodelist_
     }
 
     // Initialise the pointmarkerlist
-    in.pointmarkerlist = (int *) malloc(in.numberofpoints * sizeof(int));
+    //in.pointmarkerlist = (int *) malloc(in.numberofpoints * sizeof(int));
+    in.pointmarkerlist = new int[in.numberofpoints];
     if (!in.pointmarkerlist) {
         WarnMessage("Point marker list for triangulation is null!\n");
         return false;
@@ -2133,13 +2135,15 @@ bool TriangulateHelper::initSegmentsWithMarkers(const TriangulateHelper::linelis
     in.numberofsegments = linelst.size();
 
     // Initialise the segmentlist
-    in.segmentlist = (int *) malloc(2 * in.numberofsegments * sizeof(int));
+    //in.segmentlist = (int *) malloc(2 * in.numberofsegments * sizeof(int));
+    in.segmentlist = new int[2 * in.numberofsegments];
     if (!in.segmentlist) {
         WarnMessage("Segment list for triangulation is null!\n");
         return false;
     }
     // Initialise the segmentmarkerlist
-    in.segmentmarkerlist = (int *) malloc(in.numberofsegments * sizeof(int));
+    //in.segmentmarkerlist = (int *) malloc(in.numberofsegments * sizeof(int));
+    in.segmentmarkerlist = new int[in.numberofsegments];
     if (!in.segmentmarkerlist) {
         WarnMessage("Segment marker list for triangulation is null!\n");
         return false;
@@ -2198,7 +2202,8 @@ bool TriangulateHelper::initHolesAndRegions(const FemmProblem &problem, bool for
     in.numberofholes = problem.countHoles();
     if(in.numberofholes > 0)
     {
-        in.holelist = (REAL *) malloc(in.numberofholes * 2 * sizeof(REAL));
+        // in.holelist = (REAL *) malloc(in.numberofholes * 2 * sizeof(REAL));   
+        in.holelist = new REAL[in.numberofholes * 2];
         if (!in.holelist) {
             WarnMessage("Hole list for triangulation is null!\n");
             return false;
@@ -2227,7 +2232,8 @@ bool TriangulateHelper::initHolesAndRegions(const FemmProblem &problem, bool for
     }
 
     in.numberofregions = problem.labellist.size() - in.numberofholes;
-    in.regionlist = (REAL *) malloc(in.numberofregions * 4 * sizeof(REAL));
+    // in.regionlist = (REAL *) malloc(in.numberofregions * 4 * sizeof(REAL));
+    in.regionlist = new REAL[in.numberofregions * 4];
     if (!in.regionlist) {
         WarnMessage("Region list for triangulation is null!\n");
         return false;

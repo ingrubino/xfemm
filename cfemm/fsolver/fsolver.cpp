@@ -44,7 +44,7 @@
 #include <fstream>
 #include <ios>
 #include <iostream>
-#include <malloc.h>
+//#include <malloc.h>
 #include <math.h>
 #include <sstream>
 #include <stdio.h>
@@ -630,7 +630,8 @@ LoadMeshErr FSolver::LoadMesh(bool deleteFiles)
     int *nmbr;
     int **mbr;
 
-    nmbr = (int *)calloc(NumNodes,sizeof(int));
+    //nmbr = (int *)calloc(NumNodes,sizeof(int));
+    nmbr = new int[NumNodes]();
 
     // Make a list of how many elements that tells how
     // many elements to which each node belongs.
@@ -640,10 +641,12 @@ LoadMeshErr FSolver::LoadMesh(bool deleteFiles)
 
     // mete out some memory to build a list of the
     // connectivity...
-    mbr = (int **)calloc(NumNodes,sizeof(int *));
+    //mbr = (int **)calloc(NumNodes,sizeof(int *));
+    mbr = new int*[NumNodes]();
     for(i=0; i<NumNodes; i++)
     {
-        mbr[i] = (int *)calloc(nmbr[i],sizeof(int));
+        //mbr[i] = (int *)calloc(nmbr[i],sizeof(int));
+        mbr[i] = new int[nmbr[i]]();
         nmbr[i] = 0;
     }
 
@@ -697,9 +700,9 @@ LoadMeshErr FSolver::LoadMesh(bool deleteFiles)
     fclose(fp);
 
     // free up the connectivity information
-    free(nmbr);
-    for(i=0; i<NumNodes; i++) free(mbr[i]);
-    free(mbr);
+    delete[] nmbr; //free(nmbr);
+    for(i=0; i<NumNodes; i++) delete[] mbr[i]; //free(mbr[i]);
+    delete[] mbr; //free(mbr);
 
     if (deleteFiles)
     {

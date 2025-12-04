@@ -21,6 +21,11 @@
 #include <algorithm>
 #include <locale>
 
+//#include <algorithm>
+//#include <functional>
+#include <iostream>
+//#include <string_view>
+
 /**
  * \file stringTools.h
  * \brief String functions for use within femm
@@ -44,9 +49,14 @@ inline void to_lower(std::string &s)
  * \note taken from https://stackoverflow.com/posts/217605/revisions
  * @param s the string to be transformed in place
  */
+/*
 inline void ltrim(std::string &s) {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(),
                                     std::not1(std::ptr_fun<int, int>(std::isspace))));
+}*/
+inline void ltrim(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(),
+        [](unsigned char ch) { return !std::isspace(ch); }));
 }
 
 /**
@@ -54,9 +64,14 @@ inline void ltrim(std::string &s) {
  * \note taken from https://stackoverflow.com/posts/217605/revisions
  * @param s the string to be transformed in place
  */
+/*
 inline void rtrim(std::string &s) {
     s.erase(std::find_if(s.rbegin(), s.rend(),
                          std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+}*/
+inline void rtrim(std::string &s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(),
+                         [](unsigned char ch) { return !std::isspace(ch); }).base(), s.end());
 }
 
 /**

@@ -21,7 +21,7 @@
 
 #include <cstdlib>
 #include <math.h>
-#include "malloc.h"
+//#include "malloc.h"
 #include "femmcomplex.h"
 #include "fullmatrix.h"
 
@@ -46,9 +46,9 @@ CFullMatrix::~CFullMatrix()
     if(n==0) return;
 
     int i;
-    for(i=0; i<n; i++) free(M[i]);
-    free(M);
-    free(b);
+    for(i=0; i<n; i++) delete[] M[i]; //free(M[i]);
+    delete[] M; //free(M);
+    delete[] b; //free(b);
     n=0;
 }
 
@@ -70,14 +70,16 @@ int CFullMatrix::Create(int d)
 {
     int i;
 
-    M=(double **)calloc(d,sizeof(double *));
-    b=(double *)calloc(d,sizeof(double));
+    M = new double*[d]();  //  M=(double **)calloc(d,sizeof(double *));
+    b = new double[d]();   // b=(double *)calloc(d,sizeof(double));
     if ((M==NULL) || (b==NULL)) return false;
-    for(i=0; i<d; i++)
+
+    for (int i = 0; i < d; i++) 
     {
-        M[i]=(double *)calloc(d,sizeof(double));
+        M[i] = new double[d]();  // M[i]=(double *)calloc(d,sizeof(double));
         if (M[i]==NULL) return false;
     }
+
     n=d;
     return true;
 }
@@ -168,14 +170,16 @@ int CComplexFullMatrix::Create(int d)
 {
     int i;
 
-    M=(CComplex **)calloc(d,sizeof(CComplex *));
-    b=(CComplex *)calloc(d,sizeof(CComplex));
+    M = new CComplex*[d]();  // M=(CComplex **)calloc(d,sizeof(CComplex *));
+    b = new CComplex[d]();   // b=(CComplex *)calloc(d,sizeof(CComplex));
     if ((M==NULL) || (b==NULL)) return false;
-    for(i=0; i<d; i++)
+
+    for (int i = 0; i < d; i++) 
     {
-        M[i]=(CComplex *)calloc(d,sizeof(CComplex));
+        M[i] = new CComplex[d]();  // M[i]=(CComplex *)calloc(d,sizeof(CComplex));
         if (M[i]==NULL) return false;
     }
+
     n=d;
     return true;
 }

@@ -15,3 +15,16 @@ cfemm/libfemm/femmversion.h
 *.a
 *.result.ans
 *.result.fem
+*.cmake
+*.bin
+*.out
+/cfemm/CMakeFiles
+/cfemm/epproc/CMakeFiles
+/cfemm/esolver/CMakeFiles
+/cfemm/femmcli/CMakeFiles
+/cfemm/fmesher/CMakeFiles
+/cfemm/fpproc/CMakeFiles
+/cfemm/fsolver/CMakeFiles
+/cfemm/hpproc/CMakeFiles
+/cfemm/hsolver/CMakeFiles
+/cfemm/libfemm/CMakeFiles

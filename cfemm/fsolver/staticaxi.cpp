@@ -28,7 +28,7 @@
 #include "spars.h"
 
 #include <cstdio>
-#include <malloc.h>
+//#include <malloc.h>
 #include <math.h>
 #include <string>
 
@@ -62,8 +62,8 @@ int FSolver::StaticAxisymmetric(CBigLinProb &L)
     res=0;
 
     femmsolver::CMElement *El;
-    V_old=(double *) calloc(NumNodes,sizeof(double));
-
+    //V_old=(double *) calloc(NumNodes,sizeof(double));
+    V_old = new double[NumNodes];
     for(i=0; i<NumBlockLabels; i++) GetFillFactor(i);
 
     extRo*=units[LengthUnits];
@@ -73,9 +73,12 @@ int FSolver::StaticAxisymmetric(CBigLinProb &L)
     // check to see if any circuits have been defined and process them;
     if (NumCircProps>0)
     {
-        CircInt1=(double *)calloc(NumCircProps,sizeof(double));
+        /*CircInt1=(double *)calloc(NumCircProps,sizeof(double));
         CircInt2=(double *)calloc(NumCircProps,sizeof(double));
-        CircInt3=(double *)calloc(NumCircProps,sizeof(double));
+        CircInt3=(double *)calloc(NumCircProps,sizeof(double));*/
+        CircInt1 = new double[NumCircProps];
+        CircInt2 = new double[NumCircProps];
+        CircInt3 = new double[NumCircProps];
         for(i=0; i<NumEls; i++)
         {
             if(meshele[i].lbl>=0)

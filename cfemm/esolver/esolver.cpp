@@ -42,7 +42,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <cstring>
-#include <malloc.h>
+//#include <malloc.h>
 
 // template instantiation:
 #include "../libfemm/feasolver.cpp"
@@ -133,7 +133,8 @@ LoadMeshErr ESolver::LoadMesh(bool deleteFiles)
 
     //read meshnodes;
     std::sprintf(infile,"%s.node",PathName.c_str());
-    if((fp=fopen(infile,"rt"))==NULL){
+    if((fp=fopen(infile,"rt"))==NULL)
+    {
         return BADELEMENTFILE;
     }
     if (fgets(s,1024,fp)==NULL)
@@ -184,7 +185,8 @@ LoadMeshErr ESolver::LoadMesh(bool deleteFiles)
 
     //read in periodic boundary conditions;
     sprintf(infile,"%s.pbc",PathName.c_str());
-    if((fp=fopen(infile,"rt"))==NULL){
+    if((fp=fopen(infile,"rt"))==NULL)
+    {
         return BADPBCFILE;
     }
     fgets(s,1024,fp);
@@ -194,7 +196,8 @@ LoadMeshErr ESolver::LoadMesh(bool deleteFiles)
     if (k!=0)
         pbclist.reserve(k);
     CCommonPoint pbc;
-    for(i=0;i<k;i++){
+    for(i=0;i<k;i++)
+    {
         fscanf(fp,"%i",&j);
         fscanf(fp,"%i",&pbc.x);
         fscanf(fp,"%i",&pbc.y);
@@ -205,7 +208,8 @@ LoadMeshErr ESolver::LoadMesh(bool deleteFiles)
 
     // read in elements;
     sprintf(infile,"%s.ele",PathName.c_str());
-    if((fp=fopen(infile,"rt"))==NULL){
+    if((fp=fopen(infile,"rt"))==NULL)
+    {
         return BADELEMENTFILE;
     }
     fgets(s,1024,fp);
@@ -218,7 +222,8 @@ LoadMeshErr ESolver::LoadMesh(bool deleteFiles)
     for(i=0,defaultLabel=-1;i<NumBlockLabels;i++)
         if (labellist[i].IsDefault) defaultLabel=i;
 
-    for(i=0;i<k;i++){
+    for(i=0;i<k;i++)
+    {
         fscanf(fp,"%i",&j);
         fscanf(fp,"%i",&elm.p[0]);
         fscanf(fp,"%i",&elm.p[1]);
@@ -267,7 +272,7 @@ LoadMeshErr ESolver::LoadMesh(bool deleteFiles)
     int *nmbr;
     int **mbr;
 
-    nmbr=(int *)calloc(NumNodes,sizeof(int));
+    nmbr = new int[NumNodes](); //nmbr=(int *)calloc(NumNodes,sizeof(int));
 
     // Make a list of how many elements that tells how
     // many elements to which each node belongs.
@@ -277,9 +282,11 @@ LoadMeshErr ESolver::LoadMesh(bool deleteFiles)
 
     // mete out some memory to build a list of the
     // connectivity...
-    mbr=(int **)calloc(NumNodes,sizeof(int *));
-    for(i=0;i<NumNodes;i++){
-        mbr[i]=(int *)calloc(nmbr[i],sizeof(int));
+    mbr = new int*[NumNodes];  // mbr=(int **)calloc(NumNodes,sizeof(int *));
+    for(i=0;i<NumNodes;i++)
+    //{ 
+    {
+        mbr[i] = new int[nmbr[i]]();;  // mbr[i]=(int *)calloc(nmbr[i],sizeof(int));
         nmbr[i]=0;
     }
 
@@ -353,9 +360,9 @@ LoadMeshErr ESolver::LoadMesh(bool deleteFiles)
     fclose(fp);
 
     // free up the connectivity information
-    free(nmbr);
-    for(i=0;i<NumNodes;i++) free(mbr[i]);
-    free(mbr);
+    delete[] nmbr; //free(nmbr);
+    for(i=0;i<NumNodes;i++) delete[] mbr[i]; // free(mbr[i]);
+    delete[] mbr;// free(mbr);
 
     if (deleteFiles)
     {

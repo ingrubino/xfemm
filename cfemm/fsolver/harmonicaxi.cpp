@@ -22,7 +22,7 @@
 #include<stdio.h>
 #include<math.h>
 #include<algorithm>
-#include <malloc.h>
+//#include <malloc.h>
 #include "femmcomplex.h"
 #include "femmconstants.h"
 #include "CElement.h"
@@ -78,8 +78,8 @@ int FSolver::HarmonicAxisymmetric(CBigComplexLinProb &L,bool verbose)
     // Go through and evaluate permeability for regions subject to prox effects
     for(i=0; i<NumBlockLabels; i++) GetFillFactor(i);
 
-    V_old=(CComplex *) calloc(NumNodes+NumCircProps,sizeof(CComplex));
-
+    //V_old=(CComplex *) calloc(NumNodes+NumCircProps,sizeof(CComplex));
+    V_old=new CComplex[NumBlockProps];
     CComplex *CircInt1 = nullptr;
     CComplex *CircInt2 = nullptr;
     CComplex *CircInt3 = nullptr;
@@ -87,9 +87,13 @@ int FSolver::HarmonicAxisymmetric(CBigComplexLinProb &L,bool verbose)
     // check to see if any circuits have been defined and process them;
     if (NumCircProps>0)
     {
-        CircInt1=(CComplex *)calloc(NumCircProps,sizeof(CComplex));
+     /* CircInt1=(CComplex *)calloc(NumCircProps,sizeof(CComplex));
         CircInt2=(CComplex *)calloc(NumCircProps,sizeof(CComplex));
-        CircInt3=(CComplex *)calloc(NumCircProps,sizeof(CComplex));
+        CircInt3=(CComplex *)calloc(NumCircProps,sizeof(CComplex));*/
+        CircInt1=new CComplex[NumCircProps];
+        CircInt2=new CComplex[NumCircProps];
+        CircInt3=new CComplex[NumCircProps];
+
         for(i=0; i<NumEls; i++)
         {
             if(meshele[i].lbl>=0)
@@ -157,8 +161,10 @@ int FSolver::HarmonicAxisymmetric(CBigComplexLinProb &L,bool verbose)
     }
 
     // compute effective permeability for each block type;
-    Mu=(CComplex **)calloc(NumBlockProps,sizeof(CComplex *));
-    for(i=0; i<NumBlockProps; i++) Mu[i]=(CComplex *)calloc(2,sizeof(CComplex));
+    //Mu=(CComplex **)calloc(NumBlockProps,sizeof(CComplex *));
+    Mu=new CComplex*[NumBlockProps];
+    for(i=0; i<NumBlockProps; i++) 
+        Mu[i]=new CComplex[2]; //Mu[i]=(CComplex *)calloc(2,sizeof(CComplex));
 
     for(k=0; k<NumBlockProps; k++)
     {
@@ -808,14 +814,14 @@ int FSolver::HarmonicAxisymmetric(CBigComplexLinProb &L,bool verbose)
 
 
     // free up space allocated in this routine
-    for(k=0; k<NumBlockProps; k++) free(Mu[k]);
-    free(Mu);
-    free(V_old);
+    for(k=0; k<NumBlockProps; k++) delete[] Mu[k]; // free(Mu[k]);
+    delete[] Mu; // free(Mu);
+    delete[] V_old; // free(V_old);
     if(NumCircProps>0)
     {
-        free(CircInt1);
-        free(CircInt2);
-        free(CircInt3);
+        delete[] CircInt1; // free(CircInt1);
+        delete[] CircInt2; // free(CircInt2);
+        delete[] CircInt3; // free(CircInt3);
     }
     return true;
 }

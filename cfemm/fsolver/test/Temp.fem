@@ -1,16 +1,17 @@
 [Format]      =  4.0
 [Frequency]   =  0
-[Precision]   =  1e-08
+[Precision]   =  1e-008
 [MinAngle]    =  30
+[DoSmartMesh] =  1
 [Depth]       =  1.635130595832468
 [LengthUnits] =  meters
 [ProblemType] =  planar
 [Coordinates] =  cartesian
 [ACSolver]    =  0
-[PrevSoln]    = ""
 [PrevType]    =  0
+[PrevSoln]    =  ""
 [Comment]     =  "Add comments here."
-[PointProps]  =  0
+[PointProps]   = 0
 [BdryProps]   = 9
   <BeginBdry>
     <BdryName> = "Pros A"
@@ -251,7 +252,7 @@
   <EndCircuit>
   <BeginCircuit>
     <CircuitName> = "Coil C"
-    <TotalAmps_re> = 4.3494274780126675e-08
+    <TotalAmps_re> = 4.3494274780126675e-008
     <TotalAmps_im> = 0
     <CircuitType> = 1
   <EndCircuit>

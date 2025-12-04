@@ -23,7 +23,7 @@
 
 #include<stdio.h>
 #include<math.h>
-#include "malloc.h"
+//#include "malloc.h"
 #include "femmcomplex.h"
 #include "femmconstants.h"
 #include "femmenums.h"
@@ -44,7 +44,8 @@ int FEASolver<PointPropT,BoundaryPropT,BlockPropT,CircuitPropT,BlockLabelT,MeshE
     int *Score;
     int i,j,k,gap;
 
-    Score=(int*)calloc(NumEls,sizeof(int));
+   // Score=(int*)calloc(NumEls,sizeof(int));
+    Score = new int[NumEls]();  // Le parentesi () inizializzano a zero come calloc
 
     for(k=0; k<NumEls; k++)
     {
@@ -80,7 +81,8 @@ int FEASolver<PointPropT,BoundaryPropT,BlockPropT,CircuitPropT,BlockLabelT,MeshE
     while((gap>1)&&(i>0));
 
 
-    free(Score);
+    //free(Score);
+    delete[] Score;
     return true;
 }
 

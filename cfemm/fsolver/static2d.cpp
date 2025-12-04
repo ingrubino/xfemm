@@ -29,7 +29,7 @@
 
 #include <stdio.h>
 #include <math.h>
-#include <malloc.h>
+//#include <malloc.h>
 #include <string>
 #include <cstdio>
 
@@ -74,7 +74,8 @@ int FSolver::Static2D(CBigLinProb &L)
 
     res=0;
     femmsolver::CMElement *El;
-    V_old = (double *) calloc(NumNodes,sizeof(double));
+    //V_old = (double *) calloc(NumNodes,sizeof(double));
+    V_old = new double[NumNodes];
 
     for(i = 0; i < NumBlockLabels; i++)
     {
@@ -1020,13 +1021,13 @@ int FSolver::Static2D(CBigLinProb &L)
         L.b[i] = L.V[i]*c;    // convert answer to Amps
     }
 
-    free(V_old);
+    delete[] V_old; //free(V_old);
 
     if(NumCircProps>0)
     {
-        free(CircInt1);
-        free(CircInt2);
-        free(CircInt3);
+        delete[] CircInt1; //free(CircInt1);
+        delete[] CircInt2; //free(CircInt2);
+        delete[] CircInt3; //free(CircInt3);
     }
 
     return true;

@@ -42,7 +42,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <cstring>
-#include <malloc.h>
+//#include <malloc.h>
 
 // template instantiation:
 #include "../libfemm/feasolver.cpp"
@@ -324,7 +324,8 @@ LoadMeshErr HSolver::LoadMesh(bool deleteFiles)
 		int *nmbr;
 		int **mbr;
 
-		nmbr=(int *)calloc(NumNodes,sizeof(int));
+		// nmbr=(int *)calloc(NumNodes,sizeof(int));
+		nmbr=new int[NumNodes];
 
 		// Make a list of how many elements that tells how
 		// many elements to which each node belongs.
@@ -334,9 +335,11 @@ LoadMeshErr HSolver::LoadMesh(bool deleteFiles)
 
 		// mete out some memory to build a list of the
 		// connectivity...
-		mbr=(int **)calloc(NumNodes,sizeof(int *));
+		// mbr=(int **)calloc(NumNodes,sizeof(int *));
+		mbr=new int*[NumNodes];
+
 		for(i=0;i<NumNodes;i++){
-			mbr[i]=(int *)calloc(nmbr[i],sizeof(int));
+			mbr[i]= new int[nmbr[i]]; // (int *)calloc(nmbr[i],sizeof(int));
 			nmbr[i]=0;
 		}
 
@@ -476,7 +479,8 @@ int HSolver::AnalyzeProblem(CBigLinProb &L)
 
 	//TheView->SetDlgItemText(IDC_FRAME1,"Matrix Construction");
 
-	Vo=(double *) calloc(NumNodes,sizeof(double));
+	// Vo=(double *) calloc(NumNodes,sizeof(double));
+	Vo=new double[NumNodes];
 
 	// scan through the problem to see if there are any elements
 	// with a nonlinear conductivity

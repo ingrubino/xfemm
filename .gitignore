@@ -28,3 +28,4 @@ cfemm/libfemm/femmversion.h
 /cfemm/hpproc/CMakeFiles
 /cfemm/hsolver/CMakeFiles
 /cfemm/libfemm/CMakeFiles
+*.check
